@@ -1,7 +1,6 @@
 import React from "react";
 import BonusBar from "./BonusBar"
 import './CompletedStats.css';
-// import {BadGuyCurrentHitPoints, BadGuyMaxHitPoints, BadGuyProficiencyBonus, BadGuyDexterityBonus, BadGuyArmorClass} from './BadGuyStats.js'
 import BadGuyStats from "./BadGuyStats"
 import Stance0 from "./Stance0.jpg"
 import WindUp from "./WindUp.gif"
@@ -25,18 +24,11 @@ import HaHaHa from "./G_HaHaHa.mp3"
 import Owah from "./G_Owah.mp3"
 import Wind from "./OutdoorWind.mp3"
 
-let Text = "Begin!";
-
-
-function GetModifier(x){
-  x = (Math.floor((x-10)/2));
-  return x;
-}
-
 class CompletedStats extends React.Component{
 
   constructor(props){
     super(props);
+    this.Text = "Begin";
     this.BadGuyDexterityBonus = 1;
     this.ProficiencyBonus = 2;
     this.BadGuyProficiencyBonus = 2;
@@ -59,7 +51,7 @@ class CompletedStats extends React.Component{
 
     this.state = {
       CombatImage : Stance0,
-      Text : Text,
+      Text : this.Text,
       RollInitClicked : false,
       BonusRollInitClicked : false,
       PlayerTurn : false,
@@ -83,13 +75,14 @@ class CompletedStats extends React.Component{
     };
   }
 
+//Resets states so "Bad Guy" logic can cycle
   ResetBadGuyTurn = () => {
     this.setState({ PlayerTurn : false}, this.EnemyAction);
     this.setState({ BadGuyActionTaken : false });
     this.setState({ BadGuyBonusActionTaken : false });
-    // this.EnemyTurn();
   }
 
+//Resets states so user can go through their turn sequence again.
   ResetPlayerTurn = () => {
     this.setState({ PlayerTurn : true})
     this.setState({ ActionTaken : false });
@@ -99,56 +92,41 @@ class CompletedStats extends React.Component{
     this.setState({ BonusRolledToHit : false });
     this.setState({ BonusRolledDamage : false });
     this.setState({ BonusAttacked : false });
-
     this.setState({ Attacked : false})
     this.setState({ RolledToHit : false})
     this.setState({ RolledDamage : false})
     this.BeginCombat();
-
   }
 
-
+//Returns higher modifier of Str or Dex stat, fighters can use either
   HigherMod = () => {
     if(this.props.Strength >= this.props.Dexterity){
-      return(GetModifier(this.props.Strength))
+      return(this.GetModifier(this.props.Strength))
     }
     else{
-      return(GetModifier(this.props.Dexterity))
+      return(this.GetModifier(this.props.Dexterity))
     }
   }
 
-  Init = (x) => {
-    x = Number((x + 2) - 2)
-    return x;
-  }
-
+//calculates D&D modifier of a stat.
   GetModifier = (x) => {
     x = (Math.floor((x-10)/2));
     return x;
   }
 
-  GetDecorator = (x) => {
-    if(x>0){
-      return "+"
-    }
-  }
-
+//calculates maximum hit points based on chosen Constitution value.
   MaxHitPoints = () => {return(this.GetModifier(this.props.Constitution) + 10)
-
   }
 
+//keeps combat log scrolled to the bottom
   ScrollLog = () => {
     var textarea = document.getElementById('combatLog');
     textarea.scrollTop = textarea.scrollHeight + textarea.scrollHeight;
-
   }
 
   UpdateText = () => {
-    this.setState({ Text : Text });
-    // document.getElementById('combatLog').scrollIntoView(false);
+    this.setState({ Text : this.Text });
     setTimeout(this.ScrollLog, 100)
-
-
   }
 
   UpdateCurrentHitPoints = () => {
@@ -168,14 +146,11 @@ class CompletedStats extends React.Component{
   }
 
   UpdateAction = () => {
-    this.setState({ ActionTaken : true})
+    this.setState({ ActionTaken : true});
   }
 
-  WrapperFunction = () => {
-    this.PlayerAttack();
-    this.UpdateAction();
-  }
-
+//Player action conditional combat logic, based on D&D.  Set states allow proceeding buttons
+//to be displayed after current button clicked.
   BeginCombat = () => {
     if(this.BadGuyCurrentHitPoints > 0){
       if(!this.state.RollInitClicked){
@@ -217,22 +192,16 @@ class CompletedStats extends React.Component{
         )
       }
     }
-
-
     else if (!this.state.GameOver){
-        // this.setState ({ BadGuyCurrentHitPoints : 0 })
-
           this.PlayerWins();
           this.setState({ GameOver : true })
-          // return null;
       }
     }
 
-
+//Bonus Attack combat sequence.  Sets states to allow proceeding buttons to be displayed
   BonusAction1 = () => {
     if((!this.state.BonusActionTaken) && (this.state.PlayerTurn) &&
     (this.BadGuyCurrentHitPoints > 0) && (this.state.ActionTaken)){
-
         if(!this.state.BonusAttacked){
           return(
             <button id="Init" onClick={()=>{(this.BonusPlayerAttack)(this.setState({ BonusAttacked : true }))}}>
@@ -254,18 +223,11 @@ class CompletedStats extends React.Component{
             </button>
           )
         }
-        // else if (((this.state.ActionTaken) && (this.state.BonusRolledDamage)) || ((this.state.ActionTaken) && (!this.state.BonusSuccessfulHit))){
-        //   return(
-        //     <button id="Init" onClick={()=>{this.ResetBadGuyTurn()}}>
-        //       End Turn
-        //     </button>
-        //   )
-        // }
-
       else return null
     }
-
   }
+
+//Displays "Second Wind" button if not already used once. Sets state to disallow bonus attack when clicked
   BonusAction2 = () => {
     if((!this.state.BonusActionTaken) && (!this.state.BonusAttacked) &&
     (this.state.PlayerTurn) && (this.state.ActionTaken)){
@@ -280,66 +242,61 @@ class CompletedStats extends React.Component{
     }
   }
 
+//simulates rolling for initiative for both characters after "Roll for Initiative!" clickec.
   RollInit = () => {
    let PlayerRoll = 0;
    PlayerRoll = Math.floor((Math.random() * 19) +2);
    let EnemyRoll = 0;
    EnemyRoll = Math.floor((Math.random() * 19) +2);
-
-   Text = "Your initiative roll was: " + PlayerRoll + "!\n";
-   Text += "Bad Guy's initiative roll was: " + EnemyRoll + "!\n";
+   this.Text = "Your initiative roll was: " + PlayerRoll + "!\n";
+   this.Text += "Bad Guy's initiative roll was: " + EnemyRoll + "!\n";
    if (PlayerRoll > EnemyRoll){
-     Text += "You go first!\n";
+     this.Text += "You go first!\n";
      this.UpdateText();
      this.SetPlayerTurnTrue();
      this.PlayerTurn();
-           }
-   // else if (PlayerRoll === EnemyRoll){
-   //   Text += "You've tied!  Rolling again!\n";
-   //   this.Rollinit();
-   // }
+   }
    else {
-     Text += "Bad Guy goes first!\n";
+     this.Text += "Bad Guy goes first!\n";
      this.UpdateText();
      this.SetPlayerTurnFalse();
      this.EnemyAction();
-     // this.UpdateText();
    }
-
-
  }
 
+//Updates image and combat log after "Attack!" clicked
  PlayerAttack = () => {
    if ((this.state.BadGuyCurrentHitPoints > 0) && (this.state.PlayerTurn === true)){
      this.setState({ CombatImage : WindUp });
-     Text += "You rear your sword back and take a mighty swing!\n"
+     this.Text += "You rear your sword back and take a mighty swing!\n"
      this.UpdateText()
    }
  }
 
+//simulates rolling to hit in D&D
  PlayerRollToHit = () => {
    this.RollToHitValue = ((Math.floor((Math.random() * 19) +2)) + this.ProficiencyBonus +
    this.HigherMod());
    if(this.RollToHitValue >= this.BadGuyArmorClass){
-     Text += "Your roll of " + this.RollToHitValue + " got the best of Bad Guy's armor class (" +
+     this.Text += "Your roll of " + this.RollToHitValue + " got the best of Bad Guy's armor class (" +
      this.BadGuyArmorClass + ")!\n";
-     Text += "Roll for damage!\n";
+     this.Text += "Roll for damage!\n";
      this.UpdateText();
      this.setState({ SuccessfulHit : true});
    }
    else{
      this.setState({ CombatImage : PlayerSecondAttack })
-     Text += "Your roll of " + this.RollToHitValue + " wasn't enough to penetrate Bad Guy's armor class (" +
+     this.Text += "Your roll of " + this.RollToHitValue + " wasn't enough to penetrate Bad Guy's armor class (" +
      this.BadGuyArmorClass + ")! You missed!\n";
      this.Swoosh.play();
      this.UpdateText();
      (this.setState({ ActionTaken : true }))
    }
-
  }
 
+//Player victory gif, Delay function to keep sounds separated.  Updates log, plays sound
  PlayerWins = () => {
-   Text += "You have defeated Bad Guy!!\n"
+   this.Text += "You have defeated Bad Guy!!\n"
    this.UpdateText()
    this.setState({ BonusActionTaken : true })
    this.setState({ CombatImage : EnemyGameOver })
@@ -368,46 +325,46 @@ class CompletedStats extends React.Component{
      }
    }
    setTimeout(Delay2, 650);
-
  }
 
+//Different WindUp image and combat text when Bonus Attack clicked
  BonusPlayerAttack = () => {
    if ((this.state.BadGuyCurrentHitPoints > 0) && (this.state.PlayerTurn === true)){
      this.setState({ CombatImage : SecondWindUp });
-     Text += "You rear your sword back and take a mighty swing!\n"
+     this.Text += "You prepare to skewer the enemy!\n"
      this.UpdateText()
    }
  }
 
-
+//simulates rolling to hit, updates combat log, moves to next step depending on reult
  BonusPlayerRollToHit = () => {
    let RollToHitValue = 0;
    RollToHitValue = ((Math.floor((Math.random() * 19) +2)) + this.ProficiencyBonus +
    this.HigherMod());
    if(RollToHitValue >= this.BadGuyArmorClass){
-     Text += "Your roll of " + RollToHitValue + " got the best of Bad Guy's armor class (" +
+     this.Text += "Your roll of " + RollToHitValue + " got the best of Bad Guy's armor class (" +
      this.BadGuyArmorClass + ")!\n";
-     Text += "Roll for damage!\n";
+     this.Text += "Roll for damage!\n";
      this.UpdateText();
      this.setState({ BonusSuccessfulHit : true});
    }
    else{
      this.Swoosh2.play();
      this.setState({ CombatImage : PlayerSecondAttack })
-     Text += "Your roll of " + RollToHitValue + " wasn't enough to penetrate Bad Guy's armor class (" +
+     this.Text += "Your roll of " + RollToHitValue + " wasn't enough to penetrate Bad Guy's armor class (" +
      this.BadGuyArmorClass + ")! You missed!\n";
-
      this.UpdateText();
      (this.setState({ BonusActionTaken : true }))
    }
-
  }
 
+//simulates rolling for damage, updates combat log, image and hit points, plays sound
+//delay function is to hopefully ensure that sound plays
  BonusRollDamage = () => {
    this.setState({ CombatImage : PlayerSecondAttack })
    let Damage = 0;
    Damage = Number((Math.floor((Math.random() * 5) + 2)) + this.ProficiencyBonus);
-   Text += "You slice into your enemy for " + Damage + " points of damage!\n";
+   this.Text += "You slice into your enemy for " + Damage + " points of damage!\n";
    this.SwingHit.play();
    let downSeconds = 3;
    function Delay() {
@@ -427,12 +384,13 @@ class CompletedStats extends React.Component{
    this.UpdateText();
  }
 
-
+//siimulates rolling for damage, updates combat log, image, hit points,
+//delay function is to hopefully ensure that sound plays
  RollDamage = () => {
    this.setState({ CombatImage : PlayerFirstSwing })
    let Damage = 0;
    Damage = Number((Math.floor((Math.random() * 5) + 2)) + this.ProficiencyBonus);
-   Text += "You slice into your enemy for " + Damage + " points of damage!\n";
+   this.Text += "You slice into your enemy for " + Damage + " points of damage!\n";
    this.SwingHit.play();
    let downSeconds = 3;
    function Delay() {
@@ -452,13 +410,14 @@ class CompletedStats extends React.Component{
    this.UpdateText();
  }
 
+//for when "Second Wind" is clicked.  Calculates amount healed, updates hit points, plays sound
  PlayerSecondWind = () => {
    this.setState({ SecondWindUsed : true});
    this.setState({ BonusAttackTaken : true});
    this.Wind.play();
    let SecondWind = 0;
    SecondWind = ((Math.floor((Math.random() * 9) +2)) + 1);
-   Text += "You use the Second Wind ability to heal for " + SecondWind +
+   this.Text += "You use the Second Wind ability to heal for " + SecondWind +
    " hit points!\n"
    if ((this.CurrentHitPoints + SecondWind) > Number(this.MaxHitPoints())){
      this.CurrentHitPoints = Number(this.MaxHitPoints())
@@ -470,20 +429,20 @@ class CompletedStats extends React.Component{
    this.UpdateCurrentHitPoints();
  }
 
-
-
    PlayerTurn = () => {
-     Text += "Take your turn!!\n";
+     this.Text += "Take your turn!!\n";
      this.UpdateText();
    }
 
+//Bad Guy turn.  Follows D&D logic to the best of my ability.  Delay function to separate sounds.
+//Rolls to hit, rolls damage, updates image and log, plays sound, sets states enabling turn to process.
    EnemyFirstAttack = () => {
-     Text += "Bad Guy attempts an attack!\n"
+     this.Text += "Bad Guy attempts an attack!\n"
      this.setState ({ CombatImage : EnemyFirstAttack })
      this.UpdateText();
      this.RollToHitValue = ((Math.floor((Math.random() * 19) +2)) + this.BadGuyProficiencyBonus +
      this.BadGuyDexterityBonus);
-     Text += "Bad Guy rolls to hit.  He rolls a " + this.RollToHitValue + "!\n"
+     this.Text += "Bad Guy rolls to hit.  He rolls a " + this.RollToHitValue + "!\n"
      this.UpdateText();
      if(this.RollToHitValue >= this.ArmorClass){
        console.log(this.CurrentHitPoints)
@@ -502,9 +461,9 @@ class CompletedStats extends React.Component{
        setTimeout(Delay, 100);
        let Damage = 0;
        Damage = Number((Math.floor((Math.random() * 5) + 2)) + this.BadGuyProficiencyBonus);
-       Text += "Your armor class is" + this.ArmorClass + ", so he hits!\n";
+       this.Text += "Your armor class is" + this.ArmorClass + ", so he hits!\n";
        this.UpdateText();
-       Text += "Bad Guy swings his short sword. You take " + Damage + " points of damage!\n"
+       this.Text += "Bad Guy swings his short sword. You take " + Damage + " points of damage!\n"
        this.CurrentHitPoints -= Damage;
        this.setState({ BadGuyActionTaken : true })
        this.setState({ CurrentHitPoints : this.CurrentHitPoints }, this.EnemyBonusAction)
@@ -512,17 +471,19 @@ class CompletedStats extends React.Component{
      }
 
      else {
-       Text += "Bad Guy misses!\n"
+       this.Text += "Bad Guy misses!\n"
        this.Swoosh.play();
        this.UpdateText();
        this.setState({ BadGuyActionTaken : true }, this.EnemyBonusAction)
      }
    }
 
+//Rolls for amount healed, updates combat log, plays sound, sets states to prevent
+//additional use on following turns, and to mark bonus action as spent
    EnemySecondWind = () => {
        let SecondWind = 0;
        SecondWind = ((Math.floor((Math.random() * 9) +2)) + 1);
-       Text += "Bad Guy uses the Second Wind bonus action to heal for " + SecondWind +
+       this.Text += "Bad Guy uses the Second Wind bonus action to heal for " + SecondWind +
        " hit points!\n"
        if ((SecondWind + this.BadGuyCurrentHitPoints) > this.BadGuyMaxHitPoints){
          this.BadGuyCurrentHitPoints = this.BadGuyMaxHitPoints
@@ -536,17 +497,18 @@ class CompletedStats extends React.Component{
        this.setState ({ BadGuyBonusActionTaken : true}, this.EnemyVictory)
        this.SetPlayerTurnTrue()
        this.Wind.play();
-       // this.SetPlayerTurnTrue()
      }
+
+   //Bad Guy bonus attack logic, updates combat log, image, and plays sound(s)
    EnemySecondAttack = () => {
      if ((this.state.CurrentHitPoints > 0) && (!this.state.PlayerTurn)){
-       Text += "Bad Guy attempts a second attack!\n"
+       this.Text += "Bad Guy attempts a second attack!\n"
        this.UpdateText();
        this.setState({ CombatImage : EnemySecondAttack })
        this.RollToHitValue = 0;
        this.RollToHitValue = ((Math.floor((Math.random() * 19) +2)) + this.BadGuyProficiencyBonus +
        this.BadGuyDexterityBonus);
-       Text += "Bad Guy rolls to hit.  He rolls a " + this.RollToHitValue + "!\n"
+       this.Text += "Bad Guy rolls to hit.  He rolls a " + this.RollToHitValue + "!\n"
        this.UpdateText();
        if(this.RollToHitValue >= this.ArmorClass){
          this.SwingHit.play();
@@ -564,9 +526,9 @@ class CompletedStats extends React.Component{
          setTimeout(Delay, 100);
          let Damage = 0;
          Damage = Number((Math.floor((Math.random() * 5) + 2)) + this.BadGuyProficiencyBonus);
-         Text += "Your armor class is" + this.ArmorClass.toString() + ", he hits!\n";
+         this.Text += "Your armor class is" + this.ArmorClass.toString() + ", he hits!\n";
          this.UpdateText();
-         Text += "Bad Guy swings his short sword. You take " + Damage + " points of damage!\n"
+         this.Text += "Bad Guy swings his short sword. You take " + Damage + " points of damage!\n"
          this.setState ({ BadGuyBonusActionTaken : true})
          this.UpdateText();
          this.CurrentHitPoints -= Damage;
@@ -575,27 +537,27 @@ class CompletedStats extends React.Component{
          setTimeout(this.SetPlayerTurnTrue, 100)
        }
          else {
-           Text += "Bad Guy misses!\n"
+           this.Text += "Bad Guy misses!\n"
            this.Swoosh2.play();
            this.Swoosh2.play();
            this.setState ({ BadGuyBonusActionTaken : true}, this.EnemyTurnOver)
            this.UpdateText();
-           // this.SetPlayerTurnTrue()
          }
-
        }
      }
+
    EnemyTurnOver = () => {
-     Text += "Bad Guy's turn is over.\n";
+     this.Text += "Bad Guy's turn is over.\n";
      this.PlayerTurn();
      this.UpdateText();
      this.ResetPlayerTurn();
    }
 
+//plays BadGuy victory gif, combat log, plays sound
    EnemyVictory = () => {
      if (this.CurrentHitPoints < 1){
        this.setState({ GameOver : true })
-       Text += "Bad Guy has defeated you!\n"
+       this.Text += "Bad Guy has defeated you!\n"
        this.setState({ CombatImage : PlayerGameOver })
        this.UpdateText();
        this.Owah2.play();
@@ -627,10 +589,9 @@ class CompletedStats extends React.Component{
      else{
        this.EnemyTurnOver();
      }
-
    }
 
-
+//Bad Guy will attack if it's his turn and player still alive
    EnemyAction = () => {
      console.log(this.state.CurrentHitPoints);
      console.log(this.state.PlayerTurn);
@@ -639,65 +600,23 @@ class CompletedStats extends React.Component{
       }
    }
 
+//Invokdes second wind function if under half health, otherwise attacks, victory sequence if player dead.
    EnemyBonusAction = () => {
      if((this.BadGuyCurrentHitPoints < (this.BadGuyMaxHitPoints/2)) && (!this.state.BadGuySecondWindUsed) &&
       (this.state.CurrentHitPoints > 0) && (!this.state.PlayerTurn)){
          setTimeout(this.EnemySecondWind, 750)
-
      }
      else if((this.state.CurrentHitPoints > 0) && (!this.state.PlayerTurn) && (!this.BadGuyBonusActionTaken)){
        setTimeout(this.EnemySecondAttack, 500)
      }
-
-
      else if (this.CurrentHitPoints < 1){
        this.EnemyVictory();
-     // else {
-     //   Text += "Bad Guy's turn is over.\n";
-     //   this.PlayerTurn();
-     //   this.UpdateText();
-     //   this.ResetPlayerTurn();
-
      }
-
-
-
-
-      }
-
-
-
-
-   DisplayImage = () => {
-     if(this.state.attacked){
-       return(
-         <img src={WindUp}
-         alt="new"
-         style={{width: 960, height:600}}
-         resizeMode='cover'
-         />
-       )
-     }
-     // var img = document.createElement("img");
-     // img.src = "http://u.cubeupload.com/ChivalrousJusticier/Stance0.jpg";
-     // document.getElementById("CombatImage").appendChild(img);
-     else return(
-       <img src={WindUp}
-       alt="new"
-       style={{width: 960, height:600}}
-       resizeMode='cover'
-       />
-     );
-   }
-
-
+  }
 
 render(){
 
-
    return(
-
-
     <>
     <div class="BarContainer">
       <BonusBar
@@ -715,7 +634,7 @@ render(){
       </div>
         <div id="upperContent" class="upperContent">
           <div id="upperSubLeft" class="upperSub">
-            {this.BeginCombat()}
+          {this.BeginCombat()}
           </div>
           <div id="upperSubRight" class="upperSub">
             <div id="upperSubRight" class="upperSub">
@@ -734,7 +653,6 @@ render(){
       </div>
       <BadGuyStats BadGuyCurrentHitPoints={this.state.BadGuyCurrentHitPoints} />
     </div>
-
     </>
   );
 }

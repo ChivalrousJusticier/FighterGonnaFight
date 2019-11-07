@@ -58,7 +58,7 @@ text-align: center;
   }
 
 
-
+//creates a drag and drop destination container
 class DexterityBox extends React.Component {
   render() {
     const { list, canDrop, isOver, connectDropTarget } = this.props;
@@ -66,7 +66,7 @@ class DexterityBox extends React.Component {
       return (
         <Container canDrop={canDrop} isOver={isOver}>
           {connectDropTarget(
-            <div align="center" style={{ flex: 1, padding: "0.5rem", height: "10vh" }}>
+            <div align="center" style={{ flex: 1, padding: "0rem", height: "14vh" }}>
 
                 <HeaderStyle>
                   <h3>Dexterity</h3>

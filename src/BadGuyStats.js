@@ -2,13 +2,13 @@ import React from "react";
 import './BadGuy.css';
 
 
-function GetDecorator(x){
+function GetDecorator(x){  //returns "+" for positive numbers, used in bonus bar
   if(x>0){
     return "+"
   }
 }
 
-function GetModifier(x){
+function GetModifier(x){ // returns modifier (bonus) of a stat's value
   x = (Math.floor((x-10)/2));
   return x;
 }
@@ -20,8 +20,8 @@ render(){
   const {
     BadGuyStrength = 15,
     BadGuyStrengthBonus = GetModifier(BadGuyStrength),
-    BadGuyProficiencyBonus = 2,
-    BadGuyArmorClass = 16,
+    // BadGuyProficiencyBonus = 2, //possibly to be used later
+    // BadGuyArmorClass = 16, //possibly to be used later
     BadGuyDexterity = 13,
     BadGuyConstitution = 14,
     BadGuyIntelligence = 10,

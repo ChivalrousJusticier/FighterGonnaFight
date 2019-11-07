@@ -59,15 +59,15 @@ const Header = styled.div`
     isOver: monitor.isOver(),
     }
   }
-
+//creates a drag and drop destination container
 class CharismaBox extends React.Component {
   render() {
     const { list, canDrop, isOver, connectDropTarget } = this.props;
-    
+
       return (
         <Container canDrop={canDrop} isOver={isOver}>
           {connectDropTarget(
-            <div align="center" style={{ flex: 1, padding: "0.5rem", height: "10vh" }}>
+            <div align="center" style={{ flex: 1, padding: "0rem", height: "14vh" }}>
               <Header>
                 <h3>Charisma</h3>
               </Header>

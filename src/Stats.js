@@ -16,7 +16,7 @@ const Container = styled.div`
   }
 `;
 
-
+//keeps track of drag source data
 const statSource = {
   beginDrag(props, monitor){
     const item = { id: props.id };
@@ -24,6 +24,7 @@ const statSource = {
   }
 };
 
+//keeps track of drag source data
 function collect(connect, monitor) {
   return{
   connectDragSource: connect.dragSource(),
@@ -32,6 +33,7 @@ function collect(connect, monitor) {
 };
 }
 
+//creates draggable container for and holding each value on the stat list
 class Stats extends React.Component {
   render() {
     const { title, isDragging, connectDragSource } = this.props;

@@ -1,11 +1,5 @@
 import React from "react";
 
-function GetDecorator(x){
-  if(x>0){
-    return "+"
-  }
-}
-
 function GetModifier(x){
   x = (Math.floor((x-10)/2));
   return x;
