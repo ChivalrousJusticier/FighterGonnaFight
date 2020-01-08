@@ -1,11 +1,11 @@
 
-.FullVerticalWrapper{
+.fullVerticalWrapper{
   display: flex;
   flex-direction: column;
 
 
 }
-.Scores{
+.scores{
   display: flex;
   flex-direction: column;
   width: 110px;
@@ -19,13 +19,13 @@
 
 }
 
-.BarContainer{
+.barContainer{
   display: flex;
 
   justify-content: space-between;
 }
 
-.StatBonus{
+.statBonus{
   font-size: 40px;
   height: 75px;
   width: 80px;
@@ -41,7 +41,7 @@
   padding: -0px 0 10px 0;
 }
 
-.StatValue{
+.statValue{
   font-size: 15px;
   padding: 2px 0px 0px 0px;
   background: white;
@@ -53,7 +53,7 @@
   text-align: center;
 }
 
-.FillSpace{
+.fillSpace{
   position: absolute;
   bottom: 0;
   margin-top: auto;
@@ -79,7 +79,7 @@ label{
 }
 
 
-.VerticalMiddle{
+.verticalMiddle{
   align-content: flex-start;
 
   display: flex;

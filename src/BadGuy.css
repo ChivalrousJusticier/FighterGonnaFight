@@ -1,30 +1,8 @@
-/* $sheet-width: 800px
-$bg: white
-$faded: #ddd
-$faded-light: #eee
-$faded-dark: #bbb
-$radius: 10px
-$gutter: 10px
-$bubble-size: 10px
-$small-box-width: 30px
-$large-box-width: 70px */
 
-/* body {
-  margin: 0;
-  font-size: 28px;
-  font-family: Arial, Helvetica, sans-serif;
-} */
-.FullVerticalWrapper{
+.fullVerticalWrapper{
   height: 100%;
 }
-.BadGuyScores{
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* justify-content: space-around; */
-  /* align-items: center; */
-  /* height: 100%; */
-  /* position: absolute;
-    right: 0px; */
+.badGuyScores{
   float: right;
   width: 110px;
   background-color: #bbb;
@@ -38,7 +16,7 @@ $large-box-width: 70px */
   flex-direction: column;
 }
 
-.BadGuyStatBonus{
+.badGuyStatBonus{
   font-size: 40px;
   height: 75px;
   width: 80px;
@@ -54,7 +32,7 @@ $large-box-width: 70px */
   padding: -0px 0 10px 0;
 }
 
-.BadGuyStatValue{
+.badGuyStatValue{
   font-size: 15px;
   padding: 2px 0px 0px 0px;
   background: white;
@@ -68,11 +46,9 @@ $large-box-width: 70px */
 
 label{
   text-align: center;
-  /* border: 1px solid black; */
   border-top: 0;
   font-size: 9px;
   width: calc(100% - 18px);
-  /* border-radius: 0 0 10px 10px; */
   padding: 8px 0 0px 0;
   font-weight: bold;
 }

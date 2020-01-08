@@ -1,6 +1,6 @@
-import React from "react";
-import { DragSource } from "react-dnd";
-import styled from "styled-components";
+import React from 'react'
+import { DragSource } from 'react-dnd'
+import styled from 'styled-components'
 
 const Container = styled.div`
 
@@ -12,37 +12,37 @@ const Container = styled.div`
   padding: 1rem; //Leave this at 1rem
   &:hover {
     background-color: ${p =>
-      p.isDragging ? "rgba(100, 0, 0, 0.5)" : "rgba(0, 0, 100, 0.5)"};
+      p.isDragging ? 'rgba(100, 0, 0, 0.5)' : 'rgba(0, 0, 100, 0.5)'};
   }
-`;
+`
 
-//keeps track of drag source data
-const statSource = {
-  beginDrag(props, monitor){
-    const item = { id: props.id };
-    return item;
+// keeps track of drag source data
+const StatSource = {
+  beginDrag (props, monitor) {
+    const item = { id: props.id }
+    return item
   }
-};
-
-//keeps track of drag source data
-function collect(connect, monitor) {
-  return{
-  connectDragSource: connect.dragSource(),
-  connectDragPreview: connect.dragPreview(),
-  isDragging: monitor.isDragging()
-};
 }
 
-//creates draggable container for and holding each value on the stat list
+// keeps track of drag source data
+function collect (connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    connectDragPreview: connect.dragPreview(),
+    isDragging: monitor.isDragging()
+  }
+}
+
+// creates draggable container for and holding each value on the stat list
 class Stats extends React.Component {
-  render() {
-    const { title, isDragging, connectDragSource } = this.props;
+  render () {
+    const { value, isDragging, connectDragSource } = this.props
     return connectDragSource(
-      <div align="center" style={{margin: "0rem", padding: "0.5rem"}}>
-        <Container isDragging={isDragging}>{title}</Container>
+      <div align="center" style={{ margin: '0rem', padding: '0.5rem' }}>
+        <Container isDragging={isDragging}>{value}</Container>
       </div>
-    );
+    )
   }
 }
 
-export default DragSource("STAT_ITEM", statSource, collect)(Stats);
+export default DragSource('STAT_ITEM', StatSource, collect)(Stats)

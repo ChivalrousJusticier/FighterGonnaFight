@@ -1,9 +1,9 @@
-.App {
+.app {
   text-align: top;
 }
 
 
-.App-header {
+.app-header {
   background-color: #282c34;
   min-height: 10vh;
   display: flex;
@@ -78,7 +78,7 @@ p {
   font-size: calc(3px + 2vmin);
 }
 
-.Strength {
+.strength {
 
   display: block;
   max-width: 50px;
@@ -94,7 +94,7 @@ p {
   font-size: calc(10px + 2vmin);
 }
 
-.Dexterity {
+.dexterity {
 
   display: block;
   max-width: 50px;
@@ -110,7 +110,7 @@ p {
   font-size: calc(10px + 2vmin);
 }
 
-.Constitution {
+.constitution {
 
   display: block;
   max-width: 50px;
@@ -126,7 +126,7 @@ p {
   font-size: calc(10px + 2vmin);
 }
 
-.Intelligence {
+.intelligence {
 
   display: block;
   max-width: 50px;
@@ -142,7 +142,7 @@ p {
   font-size: calc(10px + 2vmin);
 }
 
-.Wisdom {
+.wisdom {
 
   display: block;
   max-width: 50px;
@@ -158,7 +158,7 @@ p {
   font-size: calc(10px + 2vmin);
 }
 
-.Charisma {
+.charisma {
 
   display: block;
   max-width: 50px;
@@ -176,7 +176,7 @@ p {
 
 
 
-.App-link {
+.app-link {
   color: #61dafb;
 }
 

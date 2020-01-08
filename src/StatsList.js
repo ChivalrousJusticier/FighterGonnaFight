@@ -34,7 +34,7 @@ class StatList extends React.Component {
           <h2>Stats</h2>
         </Header>
         <List>
-          {list.map(({ id, title }) => <Stats key={id} id={id} title={title} />)}
+          {list.map(({ id, value }) => <Stats key={id} id={id} value={value} />)}
         </List>
       </Container>
 

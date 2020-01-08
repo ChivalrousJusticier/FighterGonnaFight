@@ -1,89 +1,44 @@
-import React from "react";
-import './BadGuy.css';
+import React from 'react'
+import './BadGuy.css'
+import { getDecorator, getModifier } from './CommonMethods'
+import {
+  badGuyStrength, badGuyDexterity, badGuyConstitution, badGuyIntelligence,
+  badGuyWisdom, badGuyCharisma, badGuyMaxHitPoints
+} from './Constants'
 
+class BadGuyStats extends React.Component {
+  stats = ['STRENGTH', 'DEXTERITY', 'CONSTITUTION', 'INTELLIGENCE', 'WISDOM', 'CHARISMA'];
+  statsProps = [badGuyStrength, badGuyDexterity, badGuyConstitution,
+    badGuyIntelligence, badGuyWisdom, badGuyCharisma];
 
-function GetDecorator(x){  //returns "+" for positive numbers, used in bonus bar
-  if(x>0){
-    return "+"
-  }
-}
+  outputStats = this.stats.map((value, index) => {
+    const statsPropsLink = this.statsProps[index]
+    return (
+      <span class="badGuyStatBonus">
+        <label>{value}</label>{getDecorator(getModifier(statsPropsLink))}{getModifier(statsPropsLink)}
+        <span class="badGuyStatValue">{statsPropsLink}
+        </span>
+      </span>
+    )
+  })
 
-function GetModifier(x){ // returns modifier (bonus) of a stat's value
-  x = (Math.floor((x-10)/2));
-  return x;
-}
-
-class BadGuyStats extends React.Component{
-
-render(){
-
-  const {
-    BadGuyStrength = 15,
-    BadGuyStrengthBonus = GetModifier(BadGuyStrength),
-    // BadGuyProficiencyBonus = 2, //possibly to be used later
-    // BadGuyArmorClass = 16, //possibly to be used later
-    BadGuyDexterity = 13,
-    BadGuyConstitution = 14,
-    BadGuyIntelligence = 10,
-    BadGuyWisdom = 8,
-    BadGuyCharisma = 12,
-    BadGuyDexterityBonus = GetModifier(BadGuyDexterity),
-    BadGuyConstitutionBonus = GetModifier(BadGuyConstitution),
-    BadGuyIntelligenceBonus = GetModifier(BadGuyIntelligence),
-    BadGuyWisdomBonus = GetModifier(BadGuyWisdom),
-    BadGuyCharismaBonus = GetModifier(BadGuyCharisma),
-    BadGuyMaxHitPoints = 10 + BadGuyConstitutionBonus,
-
-  } = this.props;
-
-
-
-
-  return(
+  render () {
+    return (
     <>
-    <div class="FullVerticalWrapper">
-      <div class="BadGuyScores">Bad Guy Stats
-        <div class="BadGuyStatBonus">
-          <label>STRENGTH</label>{GetDecorator(BadGuyStrengthBonus)}{BadGuyStrengthBonus}
-          <div class="BadGuyStatValue">{BadGuyStrength}
-          </div>
-        </div>
-        <div class="BadGuyStatBonus">
-          <label>DEXTERITY</label>{GetDecorator(BadGuyDexterityBonus)}{BadGuyDexterityBonus}
-          <div class="BadGuyStatValue">{BadGuyDexterity}
-          </div>
-        </div>
-        <div class="BadGuyStatBonus">
-          <label>CONSTITUTION</label>{GetDecorator(BadGuyConstitutionBonus)}{BadGuyConstitutionBonus}
-          <div class="BadGuyStatValue">{BadGuyConstitution}
-          </div>
-        </div>
-        <div class="BadGuyStatBonus">
-          <label>INTELLIGENCE</label>{GetDecorator(BadGuyIntelligenceBonus)}{BadGuyIntelligenceBonus}
-          <div class="BadGuyStatValue">{BadGuyIntelligence}
-          </div>
-        </div>
-        <div class="BadGuyStatBonus">
-          <label>WISDOM</label>{GetDecorator(BadGuyWisdomBonus)}{BadGuyWisdomBonus}
-          <div class="BadGuyStatValue">{BadGuyWisdom}
-          </div>
-        </div>
-        <div class="BadGuyStatBonus">
-          <label>CHARISMA</label>{GetDecorator(BadGuyCharismaBonus)}{BadGuyCharismaBonus}
-          <div class="BadGuyStatValue">{BadGuyCharisma}
-          </div>
-        </div>
-        <div class="StatBonus">
-          <label>HIT POINTS</label>{this.props.BadGuyCurrentHitPoints}
-        </div>
-        <div>
-          <meter min="0" low={BadGuyMaxHitPoints*.25} high={BadGuyMaxHitPoints*.75} optimum = {BadGuyMaxHitPoints}value={this.props.BadGuyCurrentHitPoints} max={BadGuyMaxHitPoints}></meter>
-        </div>
-      </div>
-    </div>
+    <span class="fullVerticalWrapper">
+      <span class="badGuyScores">Bad Guy Stats
+        {this.outputStats}
+        <span class="statBonus">
+          <label>HIT POINTS</label>{this.props.badGuyCurrentHitPoints}
+        </span>
+        <span>
+          <meter min="0" low={badGuyMaxHitPoints * 0.25} high={badGuyMaxHitPoints * 0.75} optimum = {badGuyMaxHitPoints}value={this.props.badGuyCurrentHitPoints} max={badGuyMaxHitPoints}></meter>
+        </span>
+      </span>
+    </span>
 
     </>
-  )
+    )
+  }
 }
-}
-export default BadGuyStats;
+export default BadGuyStats

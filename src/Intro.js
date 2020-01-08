@@ -1,62 +1,58 @@
-import React from "react";
-import Main from "./Main.js"
-import "./Intro.css"
+import React from 'react'
+import Main from './Main.js'
+import './Intro.css'
 
-
-//Displays intro text until user clicks button to start character creation
+// Displays intro text until user clicks button to start character creation
 class Intro extends React.Component {
+  constructor (props) {
+    super(props)
 
-  constructor(props){
-    super(props);
-
-  this.state = {
-    EndIntro : false
+    this.state = {
+      endIntro: false
+    }
   }
-}
 
-Button = () => {
-  return (
-    <div id="button">
-      <button onClick={this.UpdatePage}>
+  button = () => {
+    return (
+      <div id="button">
+        <button onClick={this.updatePage}>
         Let's fight!
-      </button>
-    </div>
-  );
+        </button>
+      </div>
+    )
+  }
+
+updatePage = () => {
+  this.setState({ endIntro: true })
 }
 
-UpdatePage = () => {
-  this.setState({ EndIntro : true })
-}
-  render(){
-    if(!this.state.EndIntro){
-      return(
-        <body margin="0" id="Intro" class="Intro">
-          <div id="around">
-            <div id="pretty" class="pretty">
-              <p> The notoriously infamous villain "Bad Guy" has ruined his homelands
+render () {
+  if (!this.state.endIntro) {
+    return (
+      <body margin="0" id="intro" class="intro">
+        <div id="around">
+          <div id="pretty" class="pretty">
+            <p> The notoriously infamous villain "Bad Guy" has ruined his homelands
               and is about to ruin yours!</p>
 
-              <p> (He's also been mocking you viciously, insulting your mother, and contorting his
+            <p> (He's also been mocking you viciously, insulting your mother, and contorting his
               face into really annoying sneers!)</p>
 
-              <p> You've only one choice!  You must take up arms, become a fighter
+            <p> You've only one choice!  You must take up arms, become a fighter
                and end him once and for all!</p>
 
-              <p>Will you take up the fight?</p>
-              <p></p>
-              {this.Button()}
-            </div>
+            <p>Will you take up the fight?</p>
+            <p></p>
+            {this.button()}
           </div>
-        </body>
-      )
-    }
-
-
-    else{
-      return(
-        <Main />
-      )
-    }
+        </div>
+      </body>
+    )
+  } else {
+    return (
+      <Main />
+    )
   }
 }
-export default Intro;
+}
+export default Intro

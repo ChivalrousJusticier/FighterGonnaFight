@@ -1,6 +1,6 @@
 
-.Intro{
-  background: url('../src/FGFbackground2.jpg');
+.intro{
+  background: url('./zImageFGFbackground2.jpg');
   background-size: cover;
   text-align: center;
   height: 100vh;
