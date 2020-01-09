@@ -10,9 +10,9 @@ class BonusBar extends React.Component {
   outputStats = this.stats.map((value, index) => {
     const statsPropsLink = this.statsProps[index]
     return (
-      <span class="statBonus">
+      <span className="statBonus" key={index}>
         <label>{value}</label>{getDecorator(getModifier(statsPropsLink))}{getModifier(statsPropsLink)}
-        <span class="statValue">{statsPropsLink}
+        <span className="statValue">{statsPropsLink}
         </span>
       </span>
     )
@@ -21,16 +21,16 @@ class BonusBar extends React.Component {
   render () {
     return (
       <>
-      <span class="fullVerticalWrapper">
-        <span class="scores">Your Stats
-          {this.outputStats}
-          <span class="statBonus">
+        <span className="fullVerticalWrapper">
+          <span className="scores">Your Stats
+            {this.outputStats}
+            <span className="statBonus">
 
-            <label>HIT POINTS</label>{this.props.currentHitPoints}
+              <label>HIT POINTS</label>{this.props.currentHitPoints}
+            </span>
+            <meter min="0" low={this.maxHitPoints() * 0.25} high={this.maxHitPoints() * 0.75} optimum = {this.maxHitPoints()}value={this.props.currentHitPoints} max={this.maxHitPoints()}></meter>
           </span>
-          <meter min="0" low={this.maxHitPoints() * 0.25} high={this.maxHitPoints() * 0.75} optimum = {this.maxHitPoints()}value={this.props.currentHitPoints} max={this.maxHitPoints()}></meter>
         </span>
-      </span>
       </>
     )
   }

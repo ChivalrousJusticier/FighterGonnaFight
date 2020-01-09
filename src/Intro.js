@@ -29,9 +29,9 @@ updatePage = () => {
 render () {
   if (!this.state.endIntro) {
     return (
-      <body margin="0" id="intro" class="intro">
+      <div margin="0" id="intro" className="intro">
         <div id="around">
-          <div id="pretty" class="pretty">
+          <div id="pretty" className="pretty">
             <p> The notoriously infamous villain "Bad Guy" has ruined his homelands
               and is about to ruin yours!</p>
 
@@ -46,7 +46,7 @@ render () {
             {this.button()}
           </div>
         </div>
-      </body>
+      </div>
     )
   } else {
     return (

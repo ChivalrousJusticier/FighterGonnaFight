@@ -9,9 +9,9 @@ class App extends React.Component {
   render () {
     return (
       <>
-      <DndProvider backend={HTML5Backend}>
-        <Intro />
-      </DndProvider>
+        <DndProvider backend={HTML5Backend}>
+          <Intro />
+        </DndProvider>
       </>
     )
   }

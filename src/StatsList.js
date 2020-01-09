@@ -1,18 +1,18 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react'
+import styled from 'styled-components'
 
-import Stats from "./Stats";
+import Stats from './Stats'
 
 const Header = styled.div`
   flex: 1;
   text-align: center;
-`;
+`
 
 const List = styled.div`
   justify-content: center;
   display: flex;
   flex-wrap: wrap;
-`;
+`
 
 const Container = styled.div`
 align: center;
@@ -22,12 +22,12 @@ flex: ;
 box-shadow: 0 0 0.75rem 0.1rem rgba(0, 0, 100, 0.5);
 margin: 1rem;
 padding: 0.5rem;
-`;
+`
 
-//Displays the random stats generated in Main.js
+// Displays the random stats generated in Main.js
 class StatList extends React.Component {
-  render() {
-    const { list } = this.props;
+  render () {
+    const { list } = this.props
     return (
       <Container>
         <Header>
@@ -38,8 +38,8 @@ class StatList extends React.Component {
         </List>
       </Container>
 
-    );
+    )
   }
 }
 
-export default StatList;
+export default StatList

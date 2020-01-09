@@ -46,6 +46,7 @@ class CompletedStats extends React.Component {
     this.ow = new Audio(Ow)
     this.owah = new Audio(Owah)
     this.owah2 = new Audio(Owah2)
+    this.Oowah = new Audio(Oowah)
     this.haHa = new Audio(HaHa)
     this.tryAgain = new Audio(TryAgain)
     this.haHaHa = new Audio(HaHaHa)
@@ -148,6 +149,10 @@ class CompletedStats extends React.Component {
   // Player action conditional combat logic, based on D&D.  Set states allow proceeding buttons
   // to be displayed after current button clicked.
   beginCombat = () => {
+    function playSound () {
+      const audio = new Audio(HaHaHa)
+      audio.play()
+    }
     if (this.badGuyCurrentHitPoints > 0) {
       if (!this.state.rollInitClicked) {
         const audio = new Audio(FighterGonnaFight)
@@ -184,9 +189,18 @@ class CompletedStats extends React.Component {
         )
       }
     } else if (!this.state.gameOver) {
-      this.playerWins()
-      this.setState({ gameOver: true })
+      setTimeout(this.setStateHack, 50)
+      this.text += 'You have defeated Bad Guy!!\n'
+      this.Oowah.play()
+      setTimeout(playSound, 1000)
+      setTimeout(this.updateText, 1500)
+    } else if (this.state.gameOver) {
+      return null
     }
+  }
+
+  setStateHack = () => {
+    this.setState({ gameOver: true, combatImage: EnemyGameOver, bonusActionTaken: true })
   }
 
   // Bonus Attack combat sequence.  Sets states to allow proceeding buttons to be displayed
@@ -277,37 +291,6 @@ class CompletedStats extends React.Component {
      this.updateText();
      (this.setState({ actionTaken: true }))
    }
- }
-
- // Player victory gif, Delay function to keep sounds separated.  Updates log, plays sound
- playerWins = () => {
-   this.text += 'You have defeated Bad Guy!!\n'
-   this.updateText()
-   this.setState({ bonusActionTaken: true })
-   this.setState({ combatImage: EnemyGameOver })
-   this.ow.play()
-   let downSeconds = 3
-   function delay () {
-     downSeconds--
-     if (downSeconds > 0) {
-       setTimeout(delay, 100)
-     } else {
-       const audio = new Audio(Oowah)
-       audio.play()
-     }
-   }
-   setTimeout(delay, 400)
-   let seconds = 12
-   function delay2 () {
-     seconds--
-     if (seconds > 0) {
-       setTimeout(delay2, 100)
-     } else {
-       const audio2 = new Audio(HaHaHa)
-       audio2.play()
-     }
-   }
-   setTimeout(delay2, 650)
  }
 
  // WindUp image and combat text when Bonus Attack clicked
@@ -523,8 +506,6 @@ class CompletedStats extends React.Component {
 
    // Bad Guy will attack if it's his turn and player still alive
    enemyAction = () => {
-     console.log(this.state.currentHitPoints)
-     console.log(this.state.playerTurn)
      if ((this.state.currentHitPoints > 0) && (!this.state.playerTurn)) {
        setTimeout(this.enemyFirstAttack, 100)
      }
@@ -544,43 +525,42 @@ class CompletedStats extends React.Component {
 
    render () {
      return (
-    <>
-    <div class="barContainer">
-      <BonusBar
-        currentHitPoints={this.state.currentHitPoints} strength={this.props.strength}
-        dexterity={this.props.dexterity} constitution={this.props.constitution}
-        intelligence={this.props.intelligence} wisdom={this.props.wisdom}
-        charisma={this.props.charisma}/>
-      <div class="verticalMiddle">
-        <div class="image" id="combatImage">
-          <img src={this.state.combatImage}
-            alt="new"
-            style={{ width: 960, height: 600 }}
-            resizeMode='cover'
-          />
-        </div>
-        <div id="upperContent" class="upperContent">
-          <div id="upperSubLeft" class="upperSub">
-            {this.beginCombat()}
-          </div>
-          <div id="upperSubRight" class="upperSub">
-            <div id="upperSubRight" class="upperSub">
-            </div>
-            <div id="middleSubRight" class="upperSub">
-              {this.bonusAction1()}
-            </div>
-            <div id="lowerSubRight" class="upperSub">
-              {this.bonusAction2()}
-            </div>
-          </div>
-        </div>
-        <div id="combatLog" class="content">
-          {this.state.text}
-        </div>
-      </div>
-      <BadGuyStats badGuyCurrentHitPoints={this.state.badGuyCurrentHitPoints} />
-    </div>
-    </>
+       <>
+         <div className="barContainer">
+           <BonusBar
+             currentHitPoints={this.state.currentHitPoints} strength={this.props.strength}
+             dexterity={this.props.dexterity} constitution={this.props.constitution}
+             intelligence={this.props.intelligence} wisdom={this.props.wisdom}
+             charisma={this.props.charisma}/>
+           <div className="verticalMiddle">
+             <div className="image" id="combatImage">
+               <img src={this.state.combatImage}
+                 alt="new"
+                 style={{ width: 960, height: 600 }}
+               />
+             </div>
+             <div id="upperContent" className="upperContent">
+               <div id="upperSubLeft" className="upperSub">
+                 {this.beginCombat()}
+               </div>
+               <div id="upperSubRight" className="upperSub">
+                 <div id="upperSubRight" className="upperSub">
+                 </div>
+                 <div id="middleSubRight" className="upperSub">
+                   {this.bonusAction1()}
+                 </div>
+                 <div id="lowerSubRight" className="upperSub">
+                   {this.bonusAction2()}
+                 </div>
+               </div>
+             </div>
+             <div id="combatLog" className="content">
+               {this.state.text}
+             </div>
+           </div>
+           <BadGuyStats badGuyCurrentHitPoints={this.state.badGuyCurrentHitPoints} />
+         </div>
+       </>
      )
    }
 }

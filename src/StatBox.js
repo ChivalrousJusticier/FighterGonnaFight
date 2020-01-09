@@ -48,7 +48,7 @@ const spec = {
       alert('This stat has already been filled')
       return
     }
-    props.setStat(id)
+    props.handleDrop(id)
   }
 }
 
@@ -74,14 +74,10 @@ class StatBox extends React.Component {
         {connectDropTarget(
           <div align="center" style={{ flex: 1, padding: '0rem', height: '14vh' }}>
             <Header>
-              <h3>{this.props.statWord}</h3>
+              <h3>{ this.newName }</h3>
             </Header>
-            { this.props.assemble(this.newName) }
-
             <List>
-
-              <StatsContainer>{this.props.draggedStat(this.newName)}</StatsContainer>
-
+              <StatsContainer>{this.props.easy}</StatsContainer>
             </List>
           </div>
         )}
